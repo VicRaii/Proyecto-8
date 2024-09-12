@@ -49,10 +49,57 @@ const gettingFilmsByRunningTime = async (req, res, next) => {
   }
 };
 
+const postFilm = async (req, res, next) => {
+  try {
+    const newFilm = new Films(req.body);
+
+    if (req.file) {
+      newFilm.image = req.file.path;
+    }
+
+    const filmSaved = await newFilm.save();
+    return res.status(201).json(filmSaved);
+  } catch (error) {
+    return res.status(404).json("Error posting new film" + error.message);
+  }
+};
+
+const updateFilm = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const newFilm = new Films(req.body);
+    newFilm._id = id;
+
+    const filmUpdated = await Films.findbyIdAndUpdat(id, newFilm, {
+      new: true,
+    });
+
+    return res.status(200).json(filmUpdated);
+  } catch (error) {
+    return res.status(404).json("Error updating film");
+  }
+};
+
+const deleteFilm = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deletedFilm = await Films.findByIdAndDelete(id);
+
+    // deleteFile(deletedFilm.image);
+
+    return res.status(200).json(deletedFilm);
+  } catch (error) {
+    return res.status(404).json("Error deleting film");
+  }
+};
+
 module.exports = {
   getFilms,
   getFilmsById,
   getFilmsByGenre,
   getFilmsByYear,
   gettingFilmsByRunningTime,
+  postFilm,
+  updateFilm,
+  deleteFilm,
 };
