@@ -70,13 +70,19 @@ const updateFilm = async (req, res, next) => {
     const newFilm = new Films(req.body);
     newFilm._id = id;
 
-    const filmUpdated = await Films.findbyIdAndUpdat(id, newFilm, {
+    const filmUpdated = await Films.findByIdAndUpdate(id, newFilm, {
       new: true,
     });
 
+    if (!filmUpdated) {
+      return res.status(404).json({ message: "Film not found" });
+    }
+
     return res.status(200).json(filmUpdated);
   } catch (error) {
-    return res.status(404).json("Error updating film");
+    return res
+      .status(500)
+      .json({ message: "Error updating film", error: error.message });
   }
 };
 

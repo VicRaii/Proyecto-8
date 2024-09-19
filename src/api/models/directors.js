@@ -8,7 +8,7 @@ const filmDirectorSchema = new mongoose.Schema(
     films: [
       {
         type: mongoose.Types.ObjectId,
-        ref: "films",
+        ref: "Films",
       },
     ],
   },
