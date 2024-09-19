@@ -1,3 +1,4 @@
+const { isAdmin } = require("../../middlewares/auth");
 const {
   deleteDirector,
   getDirectors,
@@ -10,8 +11,8 @@ const directorsRouter = require("express").Router();
 
 directorsRouter.get("/", getDirectors);
 directorsRouter.get("/:id", getDirectorsById);
-directorsRouter.post("/", postDirector);
-directorsRouter.put("/:id", updateDirector);
-directorsRouter.delete("/:id", deleteDirector);
+directorsRouter.post("/", [isAdmin], postDirector);
+directorsRouter.put("/:id", [isAdmin], updateDirector);
+directorsRouter.delete("/:id", [isAdmin], deleteDirector);
 
 module.exports = directorsRouter;

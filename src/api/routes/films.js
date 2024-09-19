@@ -1,3 +1,4 @@
+const { isAuth, isAdmin } = require("../../middlewares/auth");
 const {
   getFilms,
   getFilmsById,
@@ -11,13 +12,13 @@ const {
 
 const filmsRouter = require("express").Router();
 
-filmsRouter.get("/", getFilms);
+filmsRouter.get("/", [isAdmin], getFilms);
 filmsRouter.get("/:id", getFilmsById);
 filmsRouter.get("/genre/:genre", getFilmsByGenre);
 filmsRouter.get("/year/:year", getFilmsByYear);
 filmsRouter.get("/runningTime/:runningTime", gettingFilmsByRunningTime);
-filmsRouter.post("/", postFilm);
-filmsRouter.put("/:id", updateFilm);
-filmsRouter.delete("/:id", deleteFilm);
+filmsRouter.post("/", [isAuth], postFilm);
+filmsRouter.put("/:id", [isAdmin], updateFilm);
+filmsRouter.delete("/:id", [isAdmin], deleteFilm);
 
 module.exports = filmsRouter;
