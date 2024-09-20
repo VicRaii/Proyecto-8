@@ -1,4 +1,5 @@
 const { isAdmin } = require("../../middlewares/auth");
+const upload = require("../../middlewares/file");
 const {
   deleteDirector,
   getDirectors,
@@ -11,8 +12,8 @@ const directorsRouter = require("express").Router();
 
 directorsRouter.get("/", getDirectors);
 directorsRouter.get("/:id", getDirectorsById);
-directorsRouter.post("/", [isAdmin], postDirector);
-directorsRouter.put("/:id", [isAdmin], updateDirector);
+directorsRouter.post("/", [isAdmin], upload.single("image"), postDirector);
+directorsRouter.put("/:id", [isAdmin], upload.single("image"), updateDirector);
 directorsRouter.delete("/:id", [isAdmin], deleteDirector);
 
 module.exports = directorsRouter;

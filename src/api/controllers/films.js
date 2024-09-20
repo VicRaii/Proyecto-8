@@ -1,3 +1,4 @@
+const deleteFile = require("../../utils/deleteFile");
 const Films = require("../models/films");
 
 const getFilms = async (req, res, next) => {
@@ -70,6 +71,13 @@ const updateFilm = async (req, res, next) => {
     const newFilm = new Films(req.body);
     newFilm._id = id;
 
+    if (req.file) {
+      newFilm.image = req.file.path;
+
+      const oldFilm = await Films.findById(id);
+      deleteFile(oldFilm.image);
+    }
+
     const filmUpdated = await Films.findByIdAndUpdate(id, newFilm, {
       new: true,
     });
@@ -91,7 +99,7 @@ const deleteFilm = async (req, res, next) => {
     const { id } = req.params;
     const deletedFilm = await Films.findByIdAndDelete(id);
 
-    // deleteFile(deletedFilm.image);
+    deleteFile(deletedFilm.image);
 
     return res.status(200).json(deletedFilm);
   } catch (error) {

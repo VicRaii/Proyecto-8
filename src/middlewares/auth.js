@@ -1,4 +1,3 @@
-const { request } = require("express");
 const User = require("../api/models/users");
 const { verifyJwt } = require("../config/jwt");
 

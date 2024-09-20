@@ -3,8 +3,15 @@ const express = require("express");
 const mainRouter = require("./src/api/routes/main");
 const { connectDB } = require("./src/config/db");
 const errorHandler = require("./src/middlewares/errorHandler");
+const cloudinary = require("cloudinary").v2;
 
 const app = express();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 app.use(express.json());
 

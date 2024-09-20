@@ -1,3 +1,4 @@
+const deleteFile = require("../../utils/deleteFile");
 const filmsDirectors = require("../models/directors");
 
 const getDirectors = async (req, res, next) => {
@@ -32,45 +33,29 @@ const postDirector = async (req, res, next) => {
   }
 };
 
-//! REVISAR Y CORREGIR UPDATE
-
 const updateDirector = async (req, res, next) => {
   try {
     const { id } = req.params;
-
-    // Fetch the current director
     const oldDirector = await filmsDirectors.findById(id);
+    const newDirector = new filmsDirectors(req.body);
+    newDirector._id = id;
+    const films = req.body.films || [];
+    newDirector.films = [...oldDirector.films, ...films];
 
-    if (!oldDirector) {
-      return res.status(404).json({ message: "Director not found" });
+    if (req.file) {
+      newDirector.image = req.file.path;
+      deleteFile(oldDirector.image);
     }
 
-    // Ensure oldDirector.Films is an array, default to an empty array if not
-    const oldFilms = Array.isArray(oldDirector.Films) ? oldDirector.Films : [];
-
-    // Ensure req.body.Films is an array, default to an empty array if not provided
-    const newFilms = Array.isArray(req.body.Films) ? req.body.Films : [];
-
-    // Merge existing and new films, removing duplicates using Set
-    const updatedFilms = [...new Set([...oldFilms, ...newFilms])];
-
-    // Update the director with new details and films list
-    const updatedDirectorData = {
-      ...req.body, // Spread the new director details from the request
-      Films: updatedFilms, // Overwrite the Films array with the merged data
-    };
-
-    // Perform the update
-    const directorUpdated = await filmsDirectors.findByIdAndUpdate(
+    const filmsDirectorsUpdated = await filmsDirectors.findByIdAndUpdate(
       id,
-      updatedDirectorData,
-      { new: true }
+      newDirector,
+      {
+        new: true,
+      }
     );
-
-    // Return the updated director details
-    return res.status(200).json(directorUpdated);
+    return res.status(200).json(filmsDirectorsUpdated);
   } catch (error) {
-    // Handle errors
     return res.status(500).json({
       message: "Error updating director",
       error: error.message,

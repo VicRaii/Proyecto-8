@@ -17,8 +17,6 @@ const filmSchema = new mongoose.Schema(
         "Crime",
         "Drama",
         "Fantasy",
-        "Mafia",
-        "Medieval Fantasy",
         "Mystery",
         "Racism",
         "Thriller",
