@@ -67,6 +67,9 @@ const deleteDirector = async (req, res, next) => {
   try {
     const { id } = req.params;
     const directorDeleted = await filmsDirectors.findByIdAndDelete(id);
+
+    deleteFile(directorDeleted.image);
+
     return res.status(200).json(directorDeleted);
   } catch (error) {
     return res.status(404).json("Error deleting director");
