@@ -37,6 +37,7 @@ const updateDirector = async (req, res, next) => {
   try {
     const { id } = req.params;
     const oldDirector = await filmsDirectors.findById(id);
+
     const newDirector = new filmsDirectors(req.body);
     newDirector._id = id;
     const films = req.body.films || [];
@@ -44,15 +45,15 @@ const updateDirector = async (req, res, next) => {
 
     if (req.file) {
       newDirector.image = req.file.path;
+
+      // Call deleteFile with the old image URL
       deleteFile(oldDirector.image);
     }
 
     const filmsDirectorsUpdated = await filmsDirectors.findByIdAndUpdate(
       id,
       newDirector,
-      {
-        new: true,
-      }
+      { new: true }
     );
     return res.status(200).json(filmsDirectorsUpdated);
   } catch (error) {
@@ -66,6 +67,13 @@ const updateDirector = async (req, res, next) => {
 const deleteDirector = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const directorToDelete = await filmsDirectors.findById(id);
+
+    // Call deleteFile with the director's image URL
+    if (directorToDelete.image) {
+      deleteFile(directorToDelete.image);
+    }
+
     const directorDeleted = await filmsDirectors.findByIdAndDelete(id);
     return res.status(200).json(directorDeleted);
   } catch (error) {
