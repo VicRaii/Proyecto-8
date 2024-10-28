@@ -1,5 +1,5 @@
 const { isAdmin } = require("../../middlewares/auth");
-const upload = require("../../middlewares/file");
+const createCloudinaryStorage = require("../../middlewares/file"); // Import the reusable function
 const {
   deleteDirector,
   getDirectors,
