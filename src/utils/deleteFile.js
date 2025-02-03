@@ -1,14 +1,27 @@
-const cloudinary = require("cloudinary");
+const cloudinary = require('cloudinary').v2
 
 const deleteFile = (url) => {
-  const imgSplited = url.split("/");
+  if (!url) {
+    console.error('No URL provided for deletion.')
+    return
+  }
 
-  const folderName = imgSplited.at(-2);
-  const fileName = imgSplited.at(-1).split(".")[0];
+  console.log('URL provided for deletion:', url)
 
-  cloudinary.uploader.destroy(`${folderName}/${fileName}`, () => {
-    console.log("File deleted successfully");
-  });
-};
+  const imgSplited = url.split('/')
+  const folderName = imgSplited.at(-2)
+  const fileName = imgSplited.at(-1).split('.')[0]
 
-module.exports = deleteFile;
+  console.log('Folder name:', folderName)
+  console.log('File name:', fileName)
+
+  cloudinary.uploader.destroy(`${folderName}/${fileName}`, (error, result) => {
+    if (error) {
+      console.error('Error deleting file:', error)
+    } else {
+      console.log('File deleted successfully:', result)
+    }
+  })
+}
+
+module.exports = deleteFile

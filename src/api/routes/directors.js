@@ -1,19 +1,19 @@
-const { isAdmin } = require("../../middlewares/auth");
-const createCloudinaryStorage = require("../../middlewares/file"); // Import the reusable function
+const { isAdmin } = require('../../middlewares/auth')
+const upload = require('../../middlewares/upload')
 const {
   deleteDirector,
   getDirectors,
   getDirectorsById,
   postDirector,
-  updateDirector,
-} = require("../controllers/directors");
+  updateDirector
+} = require('../controllers/directors')
 
-const directorsRouter = require("express").Router();
+const directorsRouter = require('express').Router()
 
-directorsRouter.get("/", getDirectors);
-directorsRouter.get("/:id", getDirectorsById);
-directorsRouter.post("/", [isAdmin], upload.single("image"), postDirector);
-directorsRouter.put("/:id", [isAdmin], upload.single("image"), updateDirector);
-directorsRouter.delete("/:id", [isAdmin], deleteDirector);
+directorsRouter.get('/', [isAdmin], getDirectors)
+directorsRouter.get('/:id', getDirectorsById)
+directorsRouter.post('/', [isAdmin], upload.single('image'), postDirector)
+directorsRouter.put('/:id', [isAdmin], upload.single('image'), updateDirector)
+directorsRouter.delete('/:id', [isAdmin], deleteDirector)
 
-module.exports = directorsRouter;
+module.exports = directorsRouter

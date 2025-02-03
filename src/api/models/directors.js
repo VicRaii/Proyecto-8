@@ -1,27 +1,27 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const filmDirectorSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    image: { type: String, required: false },
+    image: { type: String, required: true },
     numberOfFilms: { type: Number, required: true },
     films: [
       {
         type: mongoose.Types.ObjectId,
-        ref: "Films",
-      },
-    ],
+        ref: 'Films'
+      }
+    ]
   },
   {
     timestamps: true,
-    collection: "filmsDirectors",
+    collection: 'filmsDirectors'
   }
-);
+)
 
 const filmsDirectors = mongoose.model(
-  "filmsDirectors",
+  'filmsDirectors',
   filmDirectorSchema,
-  "filmsDirectors"
-);
+  'filmsDirectors'
+)
 
-module.exports = filmsDirectors;
+module.exports = filmsDirectors
