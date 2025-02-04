@@ -45,7 +45,6 @@ const updateDirector = async (req, res, next) => {
     newDirector._id = id
 
     if (req.file) {
-      console.log('New image uploaded:', req.file.path)
       newDirector.image = req.file.path
 
       const oldDirector = await filmsDirectors.findById(id)
@@ -87,10 +86,7 @@ const deleteDirector = async (req, res, next) => {
       return res.status(404).json('Director not found')
     }
 
-    console.log('Director to be deleted:', deletedDirector)
-
     if (deletedDirector.image) {
-      console.log('Image to delete:', deletedDirector.image)
       deleteFile(deletedDirector.image)
     }
 

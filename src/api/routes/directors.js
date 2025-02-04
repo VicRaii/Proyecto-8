@@ -12,8 +12,18 @@ const directorsRouter = require('express').Router()
 
 directorsRouter.get('/', [isAdmin], getDirectors)
 directorsRouter.get('/:id', getDirectorsById)
-directorsRouter.post('/', [isAdmin], upload.single('image'), postDirector)
-directorsRouter.put('/:id', [isAdmin], upload.single('image'), updateDirector)
+directorsRouter.post(
+  '/',
+  [isAdmin],
+  upload('FilmsAndDirectors').single('image'),
+  postDirector
+)
+directorsRouter.put(
+  '/:id',
+  [isAdmin],
+  upload('FilmsAndDirectors').single('image'),
+  updateDirector
+)
 directorsRouter.delete('/:id', [isAdmin], deleteDirector)
 
 module.exports = directorsRouter

@@ -18,8 +18,18 @@ filmsRouter.get('/:id', getFilmsById)
 filmsRouter.get('/genre/:genre', getFilmsByGenre)
 filmsRouter.get('/year/:year', getFilmsByYear)
 filmsRouter.get('/runningTime/:runningTime', gettingFilmsByRunningTime)
-filmsRouter.post('/', [isAuth], upload.single('image'), postFilm)
-filmsRouter.put('/:id', [isAdmin], upload.single('image'), updateFilm)
+filmsRouter.post(
+  '/',
+  [isAuth],
+  upload('FilmsAndDirectors').single('image'),
+  postFilm
+)
+filmsRouter.put(
+  '/:id',
+  [isAdmin],
+  upload('FilmsAndDirectors').single('image'),
+  updateFilm
+)
 filmsRouter.delete('/:id', [isAdmin], deleteFilm)
 
 module.exports = filmsRouter
